@@ -1,5 +1,10 @@
+//************* */
+const { listContacts } = require('./controllers/contacts/listContacts')
+const { getContactById } = require('./controllers/contacts/getContactById')
+const { addContact } = require('./controllers/contacts/addContact')
+const { removeContact } = require('./controllers/contacts/removeContact')
+//************* */
 const chalk = require('chalk')
-const contacts = require('./contacts')
 const { Command } = require('commander');
 const program = new Command();
 program
@@ -19,14 +24,14 @@ async function invokeAction({ action, id, name, email, phone }) {
 
         case 'list':
             console.log(chalk.blue.underline('Here is your contacts list:'))
-            console.table(await contacts.listContacts())
+            console.table(await listContacts())
             break
 
         case 'get':
-            const contactById = await contacts.getContactById(id)
+            const contactById = await getContactById(id)
             if (contactById) {
                 console.log(chalk.magenta.underline(`Here is the contact with id: ${id}`))
-                console.table(await contacts.getContactById(id))
+                console.table(await getContactById(id))
             } else {
                 console.log(chalk.red.underline(`Sorry, but there is no contact with id: ${id} in your contacts list`))
             }
@@ -34,19 +39,19 @@ async function invokeAction({ action, id, name, email, phone }) {
 
         case 'add':
 
-            if (await contacts.addContact(name, email, phone)) {
+            if (await addContact(name, email, phone)) {
                 console.log(chalk.green.underline(`contact ${name} successfully added to your contacts list`))
-                console.table(await contacts.listContacts())
+                console.table(await listContacts())
             } else {
                 console.log(chalk.red.underline(`Sorry, something went wrong and we failed to add contact ${name} to your contacts list`))
             }
             break
 
         case 'remove':
-            const removingContact = await contacts.removeContact(id)
+            const removingContact = await removeContact(id)
             if (removingContact) {
                 console.log(chalk.green.underline(`contact ${removingContact.name} was successfully removed from your contacts list`))
-                console.table(await contacts.listContacts())
+                console.table(await listContacts())
             } else {
                 console.log(chalk.red.underline(`Sorry, something went wrong and we failed to remove contact from your contacts list`))
             }
@@ -57,4 +62,6 @@ async function invokeAction({ action, id, name, email, phone }) {
     }
 }
 
-invokeAction(argv);
+(async () => {
+    await invokeAction(argv)
+})()
