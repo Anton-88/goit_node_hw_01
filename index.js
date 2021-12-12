@@ -1,9 +1,3 @@
-//************* */
-const { listContacts } = require('./controllers/contacts/listContacts')
-const { getContactById } = require('./controllers/contacts/getContactById')
-const { addContact } = require('./controllers/contacts/addContact')
-const { removeContact } = require('./controllers/contacts/removeContact')
-//************* */
 const chalk = require('chalk')
 const { Command } = require('commander');
 const program = new Command();
@@ -18,10 +12,15 @@ program.parse(process.argv);
 
 const argv = program.opts();
 
+//************* */
+const { listContacts } = require('./controllers/contacts/listContacts')
+const { getContactById } = require('./controllers/contacts/getContactById')
+const { addContact } = require('./controllers/contacts/addContact')
+const { removeContact } = require('./controllers/contacts/removeContact')
+//************* */
 
 async function invokeAction({ action, id, name, email, phone }) {
     switch (action) {
-
         case 'list':
             console.log(chalk.blue.underline('Here is your contacts list:'))
             console.table(await listContacts())
