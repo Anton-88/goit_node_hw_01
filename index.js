@@ -13,10 +13,7 @@ program.parse(process.argv);
 const argv = program.opts();
 
 //************* */
-const { listContacts } = require('./controllers/contacts/listContacts')
-const { getContactById } = require('./controllers/contacts/getContactById')
-const { addContact } = require('./controllers/contacts/addContact')
-const { removeContact } = require('./controllers/contacts/removeContact')
+const { listContacts, getContactById, addContact, removeContact } = require('./controllers/contacts/index')
 //************* */
 
 async function invokeAction({ action, id, name, email, phone }) {
